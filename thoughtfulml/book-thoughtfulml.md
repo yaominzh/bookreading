@@ -37,4 +37,5 @@
 | feature selection | unsupervised | Matrix  factorization | no restrictions | depending on algorithm can prefer data with high mutual information
 | Bagging Meta-heuristic | Meta-heuristic | will work on just about anything | prefers data that isn't highly variable
 
+# chap03 KNN
 
