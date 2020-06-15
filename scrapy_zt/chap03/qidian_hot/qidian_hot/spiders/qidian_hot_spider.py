@@ -3,6 +3,7 @@ from scrapy import Request
 from scrapy.spiders import Spider
 import re
 
+
 class HotSalesSpider(Spider):
     # 定义爬虫名称
     name = 'hot'
@@ -16,7 +17,7 @@ class HotSalesSpider(Spider):
         for one_selector in list_selector:
             name = one_selector.xpath("h2/text()").extract()[0]
             name = name.strip()
-            name=re.sub(r'\s|\"','',name)
+            name = re.sub(r'\s|\"', '', name)
             hot_dict = {"name": name,
                         }
             # 使用yield返回字典
@@ -29,5 +30,3 @@ class HotSalesSpider(Spider):
                         }
             # 使用yield返回字典
             yield hot_dict
-
-
