@@ -27,3 +27,4 @@ hs_err_pid*
 *.csv
 */*.csv
 PyDAtoDS_liuyu/.ipynb_checkpoints
+.idea
