@@ -1,5 +1,7 @@
 [[TOC]]
+
 # 00 学习算法和刷题的框架思维
+[00 学习算法和刷题的框架思维](https://labuladong.gitbook.io/algo/di-ling-zhang-bi-du-xi-lie)
 ## 一、数据结构的存储方式
 
 数据结构的存储方式只有两种：数组（顺序存储）和链表（链式存储）。
@@ -176,7 +178,7 @@ def coinChange(coins: List[int], amount: int):
     return dp(amount)
 ```
 2、带备忘录的递归
-```cpp
+```python
 def coinChange(coins: List[int], amount: int):
     # 备忘录
     memo = dict()
