@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 /**
  * Created by AZ 2020-07-05
  */
@@ -14,9 +16,10 @@ public class Chap03C01Traversal {
         System.out.println("test");
         Chap03C01Traversal sol = new Chap03C01Traversal();
 
-        sol.preOrderRecur(n1);
-        sol.inOrderRecur(n1);
+//        sol.preOrderRecur(n1);
+//        sol.inOrderRecur(n1);
         sol.postOrderRecur(n1);
+        sol.preOrderUnRecur(n1);
 
     }
 
@@ -26,7 +29,7 @@ public class Chap03C01Traversal {
         }
         preOrderRecur(head.left);
         preOrderRecur(head.right);
-        System.out.println( head.value+  " ");
+        System.out.print( head.value+  " ");
     }
 
     public void inOrderRecur(Node head) {
@@ -34,7 +37,7 @@ public class Chap03C01Traversal {
             return ;
         }
         preOrderRecur(head.left);
-        System.out.println( head.value+  " ");
+        System.out.print( head.value+  " ");
         preOrderRecur(head.right);
     }
 
@@ -42,8 +45,27 @@ public class Chap03C01Traversal {
         if (head == null) {
             return ;
         }
-        System.out.println( head.value+  " ");
+        System.out.print( head.value+  " ");
         preOrderRecur(head.left);
         preOrderRecur(head.right);
     }
+    public void preOrderUnRecur(Node head) {
+        System.out.print("pre-order: ");
+        if(head !=null){
+            Stack<Node> stack = new Stack<Node>();
+            stack.add(head);
+            while (!stack.isEmpty()) {
+                head = stack.pop();
+                System.out.print(head.value + " ");
+                if (head.right != null) {
+                    stack.push(head.right);
+                }
+                if (head.left != null) {
+                    stack.push(head.left);
+                }
+            }
+        }
+        System.out.println();
+    }
+
 }
