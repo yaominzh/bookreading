@@ -82,3 +82,24 @@ stdio.writeln()
 ## 1.4.3 sieve of Eratosthenes
 [code](primesieve.py)
 ## 
+
+# chap04
+
+Which features of the natural world are we studying? Inn most situations, we are interested in one fundamental characteristic: time.
+
+We want to learn, through the scientific method, how to properly control the situation, just as when we launch a rocket, build a ridge, or smash an atom.
+
+## scienfitic method
+> the flllowing five-step approach briefly summarizes the scientific method:
+- Observe some feature of the natural world.
+- Hypothesize a model that is consistent with the observations
+- Predict events using the hypothesis
+- Verify the predictions by making further observations
+- Validate by repeating until the hypothesis and observations agree.
+
+One of the key tenets of the scientific method is that the experiments we design must be reproducible, so that others can convince themselves of the validity of the hypothesis.
+
+## 4.1.1 3-sum problem
+[code](threesum.py)
+```python
+```
