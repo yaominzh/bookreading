@@ -1,0 +1,406 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang = "en">
+
+<head>
+
+<link rel="icon"          href="https://introcs.cs.princeton.edu/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://introcs.cs.princeton.edu/favicon.ico" type="image/x-icon">
+<link rel="stylesheet"    href="https://introcs.cs.princeton.edu/java.css" type="text/css">
+
+<title>stdio.py</title>
+
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="AUTHOR" CONTENT="Robert Sedgewick, Kevin Wayne, and Robert Dondero">
+<meta NAME="DESCRIPTION" CONTENT="stdio code in Python">
+<meta NAME="TITLE" CONTENT="stdio code in Python">
+<meta NAME="KEYWORDS" CONTENT="stdio,python,programming,computer science,algorithm,program,code">
+<meta NAME="ROBOTS" CONTENT="INDEX,FOLLOW">
+
+</head>
+
+
+<body>
+<center><h1>stdio.py</h1></center><p><br>
+
+Below is the syntax highlighted version of <a href = "stdio.py">stdio.py</a>
+from <a href = "https://introcs.cs.princeton.edu/python/code">&#167; Code</a>.
+<p><br>
+
+<!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span class="comment">"""</span>
+<span class="comment">stdio.py</span>
+
+<span class="comment">The stdio module supports reading from standard input and writing to</span>
+<span class="comment">sys.stdout.</span>
+
+<span class="comment">Note:  Usually it's a bad idea to mix these three sets of reading</span>
+<span class="comment">functions:</span>
+
+<span class="comment">-- isEmpty(), readInt(), readFloat(), readBool(), readString()</span>
+
+<span class="comment">-- hasNextLine(), readLine()</span>
+
+<span class="comment">-- readAll(), readAllInts(), readAllFloats(), readAllBools(),</span>
+<span class="comment">   readAllStrings(), readAllLines()</span>
+
+<span class="comment">Usually it's better to use one set exclusively.</span>
+<span class="comment">"""</span>
+<span class="normal">    </span>
+<span class="preproc">import</span><span class="normal"> sys</span>
+<span class="preproc">import</span><span class="normal"> re</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="comment"># Change sys.stdin so it provides universal newline support. </span>
+
+<span class="keyword">if</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">sys</span><span class="symbol">.</span><span class="normal">hexversion </span><span class="symbol">&lt;</span><span class="normal"> </span><span class="number">0x03000000</span><span class="symbol">):</span>
+<span class="normal">    </span><span class="preproc">import</span><span class="normal"> os</span>
+<span class="normal">    sys</span><span class="symbol">.</span><span class="normal">stdin </span><span class="symbol">=</span><span class="normal"> os</span><span class="symbol">.</span><span class="function">fdopen</span><span class="symbol">(</span><span class="normal">sys</span><span class="symbol">.</span><span class="normal">stdin</span><span class="symbol">.</span><span class="function">fileno</span><span class="symbol">(),</span><span class="normal"> </span><span class="string">'rU'</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">)</span>
+<span class="keyword">else</span><span class="symbol">:</span><span class="normal">    </span>
+<span class="normal">    sys</span><span class="symbol">.</span><span class="normal">stdin </span><span class="symbol">=</span><span class="normal"> </span><span class="function">open</span><span class="symbol">(</span><span class="normal">sys</span><span class="symbol">.</span><span class="normal">stdin</span><span class="symbol">.</span><span class="function">fileno</span><span class="symbol">(),</span><span class="normal"> </span><span class="string">'r'</span><span class="symbol">,</span><span class="normal"> newline</span><span class="symbol">=</span><span class="normal">None</span><span class="symbol">)</span>
+<span class="normal">            </span>
+<span class="comment">#=======================================================================</span>
+<span class="comment"># Writing functions</span>
+<span class="comment">#=======================================================================</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">writeln</span><span class="symbol">(</span><span class="normal">x</span><span class="symbol">=</span><span class="string">''</span><span class="symbol">):</span>
+<span class="comment">    """</span>
+<span class="comment">    Write x and an end-of-line mark to standard output.</span>
+<span class="comment">    """</span>
+<span class="normal">    </span><span class="keyword">if</span><span class="normal"> sys</span><span class="symbol">.</span><span class="normal">hexversion </span><span class="symbol">&lt;</span><span class="normal"> </span><span class="number">0x03000000</span><span class="symbol">:</span>
+<span class="normal">        x </span><span class="symbol">=</span><span class="normal"> </span><span class="function">unicode</span><span class="symbol">(</span><span class="normal">x</span><span class="symbol">)</span>
+<span class="normal">        x </span><span class="symbol">=</span><span class="normal"> x</span><span class="symbol">.</span><span class="function">encode</span><span class="symbol">(</span><span class="string">'utf-8'</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="keyword">else</span><span class="symbol">:</span>
+<span class="normal">        x </span><span class="symbol">=</span><span class="normal"> </span><span class="function">str</span><span class="symbol">(</span><span class="normal">x</span><span class="symbol">)</span>
+<span class="normal">    sys</span><span class="symbol">.</span><span class="normal">stdout</span><span class="symbol">.</span><span class="function">write</span><span class="symbol">(</span><span class="normal">x</span><span class="symbol">)</span>
+<span class="normal">    sys</span><span class="symbol">.</span><span class="normal">stdout</span><span class="symbol">.</span><span class="function">write</span><span class="symbol">(</span><span class="string">'\n'</span><span class="symbol">)</span>
+<span class="normal">    sys</span><span class="symbol">.</span><span class="normal">stdout</span><span class="symbol">.</span><span class="function">flush</span><span class="symbol">()</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">write</span><span class="symbol">(</span><span class="normal">x</span><span class="symbol">=</span><span class="string">''</span><span class="symbol">):</span>
+<span class="comment">    """</span>
+<span class="comment">    Write x to standard output.</span>
+<span class="comment">    """</span>
+<span class="normal">    </span><span class="keyword">if</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">sys</span><span class="symbol">.</span><span class="normal">hexversion </span><span class="symbol">&lt;</span><span class="normal"> </span><span class="number">0x03000000</span><span class="symbol">):</span>
+<span class="normal">        x </span><span class="symbol">=</span><span class="normal"> </span><span class="function">unicode</span><span class="symbol">(</span><span class="normal">x</span><span class="symbol">)</span>
+<span class="normal">        x </span><span class="symbol">=</span><span class="normal"> x</span><span class="symbol">.</span><span class="function">encode</span><span class="symbol">(</span><span class="string">'utf-8'</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="keyword">else</span><span class="symbol">:</span>
+<span class="normal">        x </span><span class="symbol">=</span><span class="normal"> </span><span class="function">str</span><span class="symbol">(</span><span class="normal">x</span><span class="symbol">)</span>
+<span class="normal">    sys</span><span class="symbol">.</span><span class="normal">stdout</span><span class="symbol">.</span><span class="function">write</span><span class="symbol">(</span><span class="normal">x</span><span class="symbol">)</span>
+<span class="normal">    sys</span><span class="symbol">.</span><span class="normal">stdout</span><span class="symbol">.</span><span class="function">flush</span><span class="symbol">()</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">writef</span><span class="symbol">(</span><span class="normal">fmt</span><span class="symbol">,</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">args</span><span class="symbol">):</span>
+<span class="comment">    """</span>
+<span class="comment">    Write each element of args to standard output.  Use the format</span>
+<span class="comment">    specified by string fmt.</span>
+<span class="comment">    """</span>
+<span class="normal">    x </span><span class="symbol">=</span><span class="normal"> fmt </span><span class="symbol">%</span><span class="normal"> args</span>
+<span class="normal">    </span><span class="keyword">if</span><span class="normal"> sys</span><span class="symbol">.</span><span class="normal">hexversion </span><span class="symbol">&lt;</span><span class="normal"> </span><span class="number">0x03000000</span><span class="symbol">:</span>
+<span class="normal">        x </span><span class="symbol">=</span><span class="normal"> </span><span class="function">unicode</span><span class="symbol">(</span><span class="normal">x</span><span class="symbol">)</span>
+<span class="normal">        x </span><span class="symbol">=</span><span class="normal"> x</span><span class="symbol">.</span><span class="function">encode</span><span class="symbol">(</span><span class="string">'utf-8'</span><span class="symbol">)</span>
+<span class="normal">    sys</span><span class="symbol">.</span><span class="normal">stdout</span><span class="symbol">.</span><span class="function">write</span><span class="symbol">(</span><span class="normal">x</span><span class="symbol">)</span>
+<span class="normal">    sys</span><span class="symbol">.</span><span class="normal">stdout</span><span class="symbol">.</span><span class="function">flush</span><span class="symbol">()</span>
+
+<span class="comment">#=======================================================================</span>
+<span class="comment"># Reading functions</span>
+<span class="comment">#=======================================================================</span>
+
+<span class="normal">_buffer </span><span class="symbol">=</span><span class="normal"> </span><span class="string">''</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">_readRegExp</span><span class="symbol">(</span><span class="normal">regExp</span><span class="symbol">):</span>
+<span class="comment">    """</span>
+<span class="comment">    Discard leading white space characters from standard input. Then read</span>
+<span class="comment">    from standard input and return a string matching regular expression</span>
+<span class="comment">    regExp.  Raise an EOFError if no non-whitespace characters remain</span>
+<span class="comment">    in standard input.  Raise a ValueError if the next characters to</span>
+<span class="comment">    be read from standard input do not match 'regExp'.</span>
+<span class="comment">    """</span>
+<span class="normal">    </span><span class="keyword">global</span><span class="normal"> _buffer</span>
+<span class="normal">    </span><span class="keyword">if</span><span class="normal"> </span><span class="function">isEmpty</span><span class="symbol">():</span>
+<span class="normal">        </span><span class="keyword">raise</span><span class="normal"> </span><span class="function">EOFError</span><span class="symbol">()</span>
+<span class="normal">    compiledRegExp </span><span class="symbol">=</span><span class="normal"> re</span><span class="symbol">.</span><span class="function">compile</span><span class="symbol">(</span><span class="normal">r</span><span class="string">'^\s*'</span><span class="normal"> </span><span class="symbol">+</span><span class="normal"> regExp</span><span class="symbol">)</span>
+<span class="normal">    match </span><span class="symbol">=</span><span class="normal"> compiledRegExp</span><span class="symbol">.</span><span class="function">search</span><span class="symbol">(</span><span class="normal">_buffer</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="keyword">if</span><span class="normal"> match </span><span class="keyword">is</span><span class="normal"> None</span><span class="symbol">:</span>
+<span class="normal">        </span><span class="keyword">raise</span><span class="normal"> </span><span class="function">ValueError</span><span class="symbol">()</span>
+<span class="normal">    s </span><span class="symbol">=</span><span class="normal"> match</span><span class="symbol">.</span><span class="function">group</span><span class="symbol">()</span>
+<span class="normal">    _buffer </span><span class="symbol">=</span><span class="normal"> _buffer</span><span class="symbol">[</span><span class="normal">match</span><span class="symbol">.</span><span class="function">end</span><span class="symbol">():]</span>
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> s</span><span class="symbol">.</span><span class="function">lstrip</span><span class="symbol">()</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">isEmpty</span><span class="symbol">():</span>
+<span class="comment">    """</span>
+<span class="comment">    Return True if no non-whitespace characters remain in standard</span>
+<span class="comment">    input. Otherwise return False.</span>
+<span class="comment">    """</span>
+<span class="normal">    </span><span class="keyword">global</span><span class="normal"> _buffer</span>
+<span class="normal">    </span><span class="keyword">while</span><span class="normal"> _buffer</span><span class="symbol">.</span><span class="function">strip</span><span class="symbol">()</span><span class="normal"> </span><span class="symbol">==</span><span class="normal"> </span><span class="string">''</span><span class="symbol">:</span>
+<span class="normal">        line </span><span class="symbol">=</span><span class="normal"> sys</span><span class="symbol">.</span><span class="normal">stdin</span><span class="symbol">.</span><span class="function">readline</span><span class="symbol">()</span>
+<span class="normal">        </span><span class="keyword">if</span><span class="normal"> sys</span><span class="symbol">.</span><span class="normal">hexversion </span><span class="symbol">&lt;</span><span class="normal"> </span><span class="number">0x03000000</span><span class="symbol">:</span>
+<span class="normal">            line </span><span class="symbol">=</span><span class="normal"> line</span><span class="symbol">.</span><span class="function">decode</span><span class="symbol">(</span><span class="string">'utf-8'</span><span class="symbol">)</span>
+<span class="normal">        </span><span class="keyword">if</span><span class="normal"> line </span><span class="symbol">==</span><span class="normal"> </span><span class="string">''</span><span class="symbol">:</span>
+<span class="normal">            </span><span class="keyword">return</span><span class="normal"> True</span>
+<span class="normal">        _buffer </span><span class="symbol">+=</span><span class="normal"> line</span>
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> False</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">readInt</span><span class="symbol">():</span>
+<span class="comment">    """</span>
+<span class="comment">    Discard leading white space characters from standard input. Then</span>
+<span class="comment">    read from standard input a sequence of characters comprising an</span>
+<span class="comment">    integer. Convert the sequence of characters to an integer, and</span>
+<span class="comment">    return the integer.  Raise an EOFError if no non-whitespace</span>
+<span class="comment">    characters remain in standard input. Raise a ValueError if the</span>
+<span class="comment">    next characters to be read from standard input cannot comprise</span>
+<span class="comment">    an integer.</span>
+<span class="comment">    """</span>
+<span class="normal">    s </span><span class="symbol">=</span><span class="normal"> </span><span class="function">_readRegExp</span><span class="symbol">(</span><span class="normal">r</span><span class="string">'[-+]?(0[xX][\dA-Fa-f]+|0[0-7]*|\d+)'</span><span class="symbol">)</span>
+<span class="normal">    radix </span><span class="symbol">=</span><span class="normal"> </span><span class="number">10</span>
+<span class="normal">    strLength </span><span class="symbol">=</span><span class="normal"> </span><span class="function">len</span><span class="symbol">(</span><span class="normal">s</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="keyword">if</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">strLength </span><span class="symbol">&gt;=</span><span class="normal"> </span><span class="number">1</span><span class="symbol">)</span><span class="normal"> </span><span class="keyword">and</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">s</span><span class="symbol">[</span><span class="number">0</span><span class="symbol">:</span><span class="number">1</span><span class="symbol">]</span><span class="normal"> </span><span class="symbol">==</span><span class="normal"> </span><span class="string">'0'</span><span class="symbol">):</span><span class="normal"> radix </span><span class="symbol">=</span><span class="normal"> </span><span class="number">8</span>
+<span class="normal">    </span><span class="keyword">if</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">strLength </span><span class="symbol">&gt;=</span><span class="normal"> </span><span class="number">2</span><span class="symbol">)</span><span class="normal"> </span><span class="keyword">and</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">s</span><span class="symbol">[</span><span class="number">0</span><span class="symbol">:</span><span class="number">2</span><span class="symbol">]</span><span class="normal"> </span><span class="symbol">==</span><span class="normal"> </span><span class="string">'-0'</span><span class="symbol">):</span><span class="normal"> radix </span><span class="symbol">=</span><span class="normal"> </span><span class="number">8</span>
+<span class="normal">    </span><span class="keyword">if</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">strLength </span><span class="symbol">&gt;=</span><span class="normal"> </span><span class="number">2</span><span class="symbol">)</span><span class="normal"> </span><span class="keyword">and</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">s</span><span class="symbol">[</span><span class="number">0</span><span class="symbol">:</span><span class="number">2</span><span class="symbol">]</span><span class="normal"> </span><span class="symbol">==</span><span class="normal"> </span><span class="string">'0x'</span><span class="symbol">):</span><span class="normal"> radix </span><span class="symbol">=</span><span class="normal"> </span><span class="number">16</span>
+<span class="normal">    </span><span class="keyword">if</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">strLength </span><span class="symbol">&gt;=</span><span class="normal"> </span><span class="number">2</span><span class="symbol">)</span><span class="normal"> </span><span class="keyword">and</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">s</span><span class="symbol">[</span><span class="number">0</span><span class="symbol">:</span><span class="number">2</span><span class="symbol">]</span><span class="normal"> </span><span class="symbol">==</span><span class="normal"> </span><span class="string">'0X'</span><span class="symbol">):</span><span class="normal"> radix </span><span class="symbol">=</span><span class="normal"> </span><span class="number">16</span>
+<span class="normal">    </span><span class="keyword">if</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">strLength </span><span class="symbol">&gt;=</span><span class="normal"> </span><span class="number">3</span><span class="symbol">)</span><span class="normal"> </span><span class="keyword">and</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">s</span><span class="symbol">[</span><span class="number">0</span><span class="symbol">:</span><span class="number">3</span><span class="symbol">]</span><span class="normal"> </span><span class="symbol">==</span><span class="normal"> </span><span class="string">'-0x'</span><span class="symbol">):</span><span class="normal"> radix </span><span class="symbol">=</span><span class="normal"> </span><span class="number">16</span>
+<span class="normal">    </span><span class="keyword">if</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">strLength </span><span class="symbol">&gt;=</span><span class="normal"> </span><span class="number">3</span><span class="symbol">)</span><span class="normal"> </span><span class="keyword">and</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">s</span><span class="symbol">[</span><span class="number">0</span><span class="symbol">:</span><span class="number">3</span><span class="symbol">]</span><span class="normal"> </span><span class="symbol">==</span><span class="normal"> </span><span class="string">'-0X'</span><span class="symbol">):</span><span class="normal"> radix </span><span class="symbol">=</span><span class="normal"> </span><span class="number">16</span>
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> </span><span class="function">int</span><span class="symbol">(</span><span class="normal">s</span><span class="symbol">,</span><span class="normal"> radix</span><span class="symbol">)</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">readAllInts</span><span class="symbol">():</span>
+<span class="comment">    """</span>
+<span class="comment">    Read all remaining strings from standard input, convert each to</span>
+<span class="comment">    an int, and return those ints in an array. Raise a ValueError if</span>
+<span class="comment">    any of the strings cannot be converted to an int.</span>
+<span class="comment">    """</span>
+<span class="normal">    strings </span><span class="symbol">=</span><span class="normal"> </span><span class="function">readAllStrings</span><span class="symbol">()</span>
+<span class="normal">    ints </span><span class="symbol">=</span><span class="normal"> </span><span class="symbol">[]</span>
+<span class="normal">    </span><span class="keyword">for</span><span class="normal"> s </span><span class="keyword">in</span><span class="normal"> strings</span><span class="symbol">:</span>
+<span class="normal">        i </span><span class="symbol">=</span><span class="normal"> </span><span class="function">int</span><span class="symbol">(</span><span class="normal">s</span><span class="symbol">)</span>
+<span class="normal">        ints</span><span class="symbol">.</span><span class="function">append</span><span class="symbol">(</span><span class="normal">i</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> ints</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">readFloat</span><span class="symbol">():</span>
+<span class="comment">    """</span>
+<span class="comment">    Discard leading white space characters from standard input. Then</span>
+<span class="comment">    read from standard input a sequence of characters comprising a</span>
+<span class="comment">    float. Convert the sequence of characters to a float, and return the</span>
+<span class="comment">    float.  Raise an EOFError if no non-whitespace characters remain</span>
+<span class="comment">    in standard input. Raise a ValueError if the next characters to be</span>
+<span class="comment">    read from standard input cannot comprise a float.</span>
+<span class="comment">    """</span>
+<span class="normal">    s </span><span class="symbol">=</span><span class="normal"> </span><span class="function">_readRegExp</span><span class="symbol">(</span><span class="normal">r</span><span class="string">'[-+]?(\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?'</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> </span><span class="function">float</span><span class="symbol">(</span><span class="normal">s</span><span class="symbol">)</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">readAllFloats</span><span class="symbol">():</span>
+<span class="comment">    """</span>
+<span class="comment">    Read all remaining strings from standard input, convert each to</span>
+<span class="comment">    a float, and return those floats in an array. Raise a ValueError if</span>
+<span class="comment">    any of the strings cannot be converted to a float.</span>
+<span class="comment">    """</span>
+<span class="normal">    strings </span><span class="symbol">=</span><span class="normal"> </span><span class="function">readAllStrings</span><span class="symbol">()</span>
+<span class="normal">    floats </span><span class="symbol">=</span><span class="normal"> </span><span class="symbol">[]</span>
+<span class="normal">    </span><span class="keyword">for</span><span class="normal"> s </span><span class="keyword">in</span><span class="normal"> strings</span><span class="symbol">:</span>
+<span class="normal">        f </span><span class="symbol">=</span><span class="normal"> </span><span class="function">float</span><span class="symbol">(</span><span class="normal">s</span><span class="symbol">)</span>
+<span class="normal">        floats</span><span class="symbol">.</span><span class="function">append</span><span class="symbol">(</span><span class="normal">f</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> floats</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">readBool</span><span class="symbol">():</span>
+<span class="comment">    """</span>
+<span class="comment">    Discard leading white space characters from standard input. Then</span>
+<span class="comment">    read from standard input a sequence of characters comprising a bool.</span>
+<span class="comment">    Convert the sequence of characters to a bool, and return the</span>
+<span class="comment">    bool.  Raise an EOFError if no non-whitespace characters remain</span>
+<span class="comment">    in standard input. Raise a ValueError if the next characters to be</span>
+<span class="comment">    read from standard input cannot comprise a bool.</span>
+
+<span class="comment">    These character sequences can comprise a bool:</span>
+<span class="comment">    -- True</span>
+<span class="comment">    -- False</span>
+<span class="comment">    -- 1 (means true)</span>
+<span class="comment">    -- 0 (means false)</span>
+<span class="comment">    """</span>
+<span class="normal">    s </span><span class="symbol">=</span><span class="normal"> </span><span class="function">_readRegExp</span><span class="symbol">(</span><span class="normal">r</span><span class="string">'(True)|(False)|1|0'</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="keyword">if</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">s </span><span class="symbol">==</span><span class="normal"> </span><span class="string">'True'</span><span class="symbol">)</span><span class="normal"> </span><span class="keyword">or</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">s </span><span class="symbol">==</span><span class="normal"> </span><span class="string">'1'</span><span class="symbol">):</span>
+<span class="normal">        </span><span class="keyword">return</span><span class="normal"> True</span>
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> False</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">readAllBools</span><span class="symbol">():</span>
+<span class="comment">    """</span>
+<span class="comment">    Read all remaining strings from standard input, convert each to</span>
+<span class="comment">    a bool, and return those bools in an array. Raise a ValueError if</span>
+<span class="comment">    any of the strings cannot be converted to a bool.</span>
+<span class="comment">    """</span>
+<span class="normal">    strings </span><span class="symbol">=</span><span class="normal"> </span><span class="function">readAllStrings</span><span class="symbol">()</span>
+<span class="normal">    bools </span><span class="symbol">=</span><span class="normal"> </span><span class="symbol">[]</span>
+<span class="normal">    </span><span class="keyword">for</span><span class="normal"> s </span><span class="keyword">in</span><span class="normal"> strings</span><span class="symbol">:</span>
+<span class="normal">        b </span><span class="symbol">=</span><span class="normal"> </span><span class="function">bool</span><span class="symbol">(</span><span class="normal">s</span><span class="symbol">)</span>
+<span class="normal">        bools</span><span class="symbol">.</span><span class="function">append</span><span class="symbol">(</span><span class="normal">b</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> bools</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">readString</span><span class="symbol">():</span>
+<span class="comment">    """</span>
+<span class="comment">    Discard leading white space characters from standard input. Then</span>
+<span class="comment">    read from standard input a sequence of characters comprising a</span>
+<span class="comment">    string, and return the string. Raise an EOFError if no</span>
+<span class="comment">    non-whitespace characters remain in standard input.</span>
+<span class="comment">    """</span>
+<span class="normal">    s </span><span class="symbol">=</span><span class="normal"> </span><span class="function">_readRegExp</span><span class="symbol">(</span><span class="normal">r</span><span class="string">'\S+'</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> s</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">readAllStrings</span><span class="symbol">():</span>
+<span class="comment">    """</span>
+<span class="comment">    Read all remaining strings from standard input, and return them in</span>
+<span class="comment">    an array.</span>
+<span class="comment">    """</span>
+<span class="normal">    strings </span><span class="symbol">=</span><span class="normal"> </span><span class="symbol">[]</span>
+<span class="normal">    </span><span class="keyword">while</span><span class="normal"> </span><span class="keyword">not</span><span class="normal"> </span><span class="function">isEmpty</span><span class="symbol">():</span>
+<span class="normal">        s </span><span class="symbol">=</span><span class="normal"> </span><span class="function">readString</span><span class="symbol">()</span>
+<span class="normal">        strings</span><span class="symbol">.</span><span class="function">append</span><span class="symbol">(</span><span class="normal">s</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> strings</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">hasNextLine</span><span class="symbol">():</span>
+<span class="comment">    """</span>
+<span class="comment">    Return True if standard input has a next line. Otherwise return</span>
+<span class="comment">    False.</span>
+<span class="comment">    """</span>
+<span class="normal">    </span><span class="keyword">global</span><span class="normal"> _buffer</span>
+<span class="normal">    </span><span class="keyword">if</span><span class="normal"> _buffer </span><span class="symbol">!=</span><span class="normal"> </span><span class="string">''</span><span class="symbol">:</span>
+<span class="normal">        </span><span class="keyword">return</span><span class="normal"> True</span>
+<span class="normal">    </span><span class="keyword">else</span><span class="symbol">:</span>
+<span class="normal">        _buffer </span><span class="symbol">=</span><span class="normal"> sys</span><span class="symbol">.</span><span class="normal">stdin</span><span class="symbol">.</span><span class="function">readline</span><span class="symbol">()</span>
+<span class="normal">        </span><span class="keyword">if</span><span class="normal"> sys</span><span class="symbol">.</span><span class="normal">hexversion </span><span class="symbol">&lt;</span><span class="normal"> </span><span class="number">0x03000000</span><span class="symbol">:</span>
+<span class="normal">            _buffer </span><span class="symbol">=</span><span class="normal"> _buffer</span><span class="symbol">.</span><span class="function">decode</span><span class="symbol">(</span><span class="string">'utf-8'</span><span class="symbol">)</span>
+<span class="normal">        </span><span class="keyword">if</span><span class="normal"> _buffer </span><span class="symbol">==</span><span class="normal"> </span><span class="string">''</span><span class="symbol">:</span>
+<span class="normal">            </span><span class="keyword">return</span><span class="normal"> False</span>
+<span class="normal">        </span><span class="keyword">return</span><span class="normal"> True</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">readLine</span><span class="symbol">():</span>
+<span class="comment">    """</span>
+<span class="comment">    Read and return as a string the next line of standard input.</span>
+<span class="comment">    Raise an EOFError is there is no next line.</span>
+<span class="comment">    """</span>
+<span class="normal">    </span><span class="keyword">global</span><span class="normal"> _buffer</span>
+<span class="normal">    </span><span class="keyword">if</span><span class="normal"> </span><span class="keyword">not</span><span class="normal"> </span><span class="function">hasNextLine</span><span class="symbol">():</span>
+<span class="normal">        </span><span class="keyword">raise</span><span class="normal"> </span><span class="function">EOFError</span><span class="symbol">()</span>
+<span class="normal">    s </span><span class="symbol">=</span><span class="normal"> _buffer</span>
+<span class="normal">    _buffer </span><span class="symbol">=</span><span class="normal"> </span><span class="string">''</span>
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> s</span><span class="symbol">.</span><span class="function">rstrip</span><span class="symbol">(</span><span class="string">'\n'</span><span class="symbol">)</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">readAllLines</span><span class="symbol">():</span>
+<span class="comment">    """</span>
+<span class="comment">    Read all remaining lines from standard input, and return them as</span>
+<span class="comment">    strings in an array.</span>
+<span class="comment">    """</span>
+<span class="normal">    lines </span><span class="symbol">=</span><span class="normal"> </span><span class="symbol">[]</span>
+<span class="normal">    </span><span class="keyword">while</span><span class="normal"> </span><span class="function">hasNextLine</span><span class="symbol">():</span>
+<span class="normal">        line </span><span class="symbol">=</span><span class="normal"> </span><span class="function">readLine</span><span class="symbol">()</span>
+<span class="normal">        lines</span><span class="symbol">.</span><span class="function">append</span><span class="symbol">(</span><span class="normal">line</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> lines</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">readAll</span><span class="symbol">():</span>
+<span class="comment">    """</span>
+<span class="comment">    Read and return as a string all remaining lines of standard input.</span>
+<span class="comment">    """</span>
+<span class="normal">    </span><span class="keyword">global</span><span class="normal"> _buffer</span>
+<span class="normal">    s </span><span class="symbol">=</span><span class="normal"> _buffer</span>
+<span class="normal">    _buffer </span><span class="symbol">=</span><span class="normal"> </span><span class="string">''</span>
+<span class="normal">    </span><span class="keyword">for</span><span class="normal"> line </span><span class="keyword">in</span><span class="normal"> sys</span><span class="symbol">.</span><span class="normal">stdin</span><span class="symbol">:</span>
+<span class="normal">        </span><span class="keyword">if</span><span class="normal"> sys</span><span class="symbol">.</span><span class="normal">hexversion </span><span class="symbol">&lt;</span><span class="normal"> </span><span class="number">0x03000000</span><span class="symbol">:</span>
+<span class="normal">            line </span><span class="symbol">=</span><span class="normal"> line</span><span class="symbol">.</span><span class="function">decode</span><span class="symbol">(</span><span class="string">'utf-8'</span><span class="symbol">)</span>
+<span class="normal">        s </span><span class="symbol">+=</span><span class="normal"> line</span>
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> s</span>
+
+<span class="comment">#=======================================================================</span>
+<span class="comment"># For Testing</span>
+<span class="comment">#=======================================================================</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">_testWrite</span><span class="symbol">():</span>
+<span class="normal">    </span><span class="function">writeln</span><span class="symbol">()</span>
+<span class="normal">    </span><span class="function">writeln</span><span class="symbol">(</span><span class="string">'string'</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="function">writeln</span><span class="symbol">(</span><span class="number">123456</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="function">writeln</span><span class="symbol">(</span><span class="number">123.456</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="function">writeln</span><span class="symbol">(</span><span class="normal">True</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="function">write</span><span class="symbol">()</span>
+<span class="normal">    </span><span class="function">write</span><span class="symbol">(</span><span class="string">'string'</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="function">write</span><span class="symbol">(</span><span class="number">123456</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="function">write</span><span class="symbol">(</span><span class="number">123.456</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="function">write</span><span class="symbol">(</span><span class="normal">True</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="function">writeln</span><span class="symbol">()</span>
+<span class="normal">    </span><span class="function">writef</span><span class="symbol">(</span><span class="string">'&lt;%s&gt; &lt;%8d&gt; &lt;%14.8f&gt;\n'</span><span class="symbol">,</span><span class="normal"> </span><span class="string">'string'</span><span class="symbol">,</span><span class="normal"> </span><span class="number">123456</span><span class="symbol">,</span><span class="normal"> </span><span class="number">123.456</span><span class="symbol">)</span>
+<span class="normal">    </span><span class="function">writef</span><span class="symbol">(</span><span class="string">'formatstring\n'</span><span class="symbol">)</span>
+
+<span class="comment">#-----------------------------------------------------------------------</span>
+
+<span class="keyword">def</span><span class="normal"> </span><span class="function">_main</span><span class="symbol">():</span>
+<span class="comment">    """</span>
+<span class="comment">    For testing. The command-line argument should be the name of the</span>
+<span class="comment">    function that should be called.</span>
+<span class="comment">    """</span>
+
+<span class="normal">    map </span><span class="symbol">=</span><span class="normal"> </span><span class="symbol">{</span>
+<span class="normal">        </span><span class="string">'readInt'</span><span class="symbol">:</span><span class="normal">    readInt</span><span class="symbol">,</span><span class="normal">    </span><span class="string">'readAllInts'</span><span class="symbol">:</span><span class="normal">    readAllInts</span><span class="symbol">,</span>
+<span class="normal">        </span><span class="string">'readFloat'</span><span class="symbol">:</span><span class="normal">  readFloat</span><span class="symbol">,</span><span class="normal">  </span><span class="string">'readAllFloats'</span><span class="symbol">:</span><span class="normal">  readAllFloats</span><span class="symbol">,</span>
+<span class="normal">        </span><span class="string">'readBool'</span><span class="symbol">:</span><span class="normal">   readBool</span><span class="symbol">,</span><span class="normal">   </span><span class="string">'readAllBools'</span><span class="symbol">:</span><span class="normal">   readAllBools</span><span class="symbol">,</span>
+<span class="normal">        </span><span class="string">'readString'</span><span class="symbol">:</span><span class="normal"> readString</span><span class="symbol">,</span><span class="normal"> </span><span class="string">'readAllStrings'</span><span class="symbol">:</span><span class="normal"> readAllStrings</span><span class="symbol">,</span>
+<span class="normal">        </span><span class="string">'readLine'</span><span class="symbol">:</span><span class="normal">   readLine</span><span class="symbol">,</span><span class="normal">   </span><span class="string">'readAllLines'</span><span class="normal"> </span><span class="symbol">:</span><span class="normal">  readAllLines</span><span class="symbol">,</span>
+<span class="normal">        </span><span class="string">'readAll'</span><span class="symbol">:</span><span class="normal">    readAll </span><span class="symbol">}</span>
+
+<span class="normal">    testId </span><span class="symbol">=</span><span class="normal"> sys</span><span class="symbol">.</span><span class="normal">argv</span><span class="symbol">[</span><span class="number">1</span><span class="symbol">]</span>
+
+<span class="normal">    </span><span class="keyword">if</span><span class="normal"> testId </span><span class="symbol">==</span><span class="normal"> </span><span class="string">'write'</span><span class="symbol">:</span>
+<span class="normal">        </span><span class="function">_testWrite</span><span class="symbol">()</span>
+<span class="normal">    </span><span class="keyword">else</span><span class="symbol">:</span>
+<span class="normal">        </span><span class="function">writeln</span><span class="symbol">(</span><span class="normal">map</span><span class="symbol">[</span><span class="normal">testId</span><span class="symbol">]())</span>
+
+<span class="keyword">if</span><span class="normal"> __name__ </span><span class="symbol">==</span><span class="normal"> </span><span class="string">'__main__'</span><span class="symbol">:</span>
+<span class="normal">    </span><span class="function">_main</span><span class="symbol">()</span>
+</tt></pre>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-10811519-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+<p><br><address><small>
+Copyright &copy; 2000&ndash;2015, Robert Sedgewick, Kevin Wayne, and Robert Dondero.
+<br>Last updated: Fri Oct 20 20:45:16 EDT 2017.
+</small></address>
+
+</html>
