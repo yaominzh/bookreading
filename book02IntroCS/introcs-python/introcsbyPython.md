@@ -99,6 +99,8 @@ We want to learn, through the scientific method, how to properly control the sit
 
 One of the key tenets of the scientific method is that the experiments we design must be reproducible, so that others can convince themselves of the validity of the hypothesis.
 
+## 4.1
+python uses a much simpler internal representation for strings than for lists /arrays, a string ojbect contains: a reference to a place in memory + length of the string
 ## 4.1.1 3-sum problem
 [code](threesum.py)
 ```python
@@ -123,5 +125,29 @@ def main():
     if count<10:
         writeTriples(a)
 if __name__ == '__main__': main()
+
+```
+## 4.2.x binary search
+we start with lo = 0  and hi = n and the following recursive strategy:
+- base case: if hi-lo equals 1, then the secret number is lo.
+- recursive step: otherwise, ask whether the secret numbers is greater than or equal to the number mid = (hi + lo) // 2. if so, look for the number in [min, hi); if not, look for the number in [lo, mid).
+```python
+import sys
+import stdio
+def search(lo, hi):
+    if (hi - lo) == 1:
+        return lo
+    mid = (hi + lo) // 2
+    stdio.write('Greater than or equal to ' + str(mid) + '?')
+    if stdio.readBool():
+        return search(mid, hi)
+    else:
+        return search(lo, mid)
+k = int(sys.argv[1])
+n = 2**k
+stdio.write('think of a number')
+guess = search(0, n)
+    
+
 
 ```
