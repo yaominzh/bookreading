@@ -49,3 +49,5 @@ stdio.writeln('Your number is ' + str(guess))
 # Greater than or equal to 77?  True
 # Your number is 77
 
+if __name__ == '__main__':
+    pass
